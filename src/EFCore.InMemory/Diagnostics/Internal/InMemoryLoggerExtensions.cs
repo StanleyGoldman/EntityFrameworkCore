@@ -28,19 +28,18 @@ namespace Microsoft.EntityFrameworkCore.InMemory.Internal
         {
             var definition = InMemoryResources.LogTransactionsNotSupported(diagnostics);
 
-            var warningBehavior = definition.GetLogBehavior(diagnostics);
-            if (warningBehavior != WarningBehavior.Ignore)
+            if (definition.WarningBehavior != WarningBehavior.Ignore)
             {
-                definition.Log(diagnostics, warningBehavior);
+                definition.Log(diagnostics);
             }
 
-            if (diagnostics.DiagnosticSource.IsEnabled(definition.EventId.Name))
+            if (diagnostics.NeedsEventData(definition, out var diagnosticSourceEnabled, out var simpleLogEnabled))
             {
-                diagnostics.DiagnosticSource.Write(
-                    definition.EventId.Name,
-                    new EventData(
-                        definition,
-                        (d, _) => ((EventDefinition)d).GenerateMessage()));
+                var eventData = new EventData(
+                    definition,
+                    (d, _) => ((EventDefinition)d).GenerateMessage());
+
+                diagnostics.DispatchEventData(diagnosticSourceEnabled, simpleLogEnabled, definition, eventData);
             }
         }
 
@@ -57,24 +56,20 @@ namespace Microsoft.EntityFrameworkCore.InMemory.Internal
         {
             var definition = InMemoryResources.LogSavedChanges(diagnostics);
 
-            var warningBehavior = definition.GetLogBehavior(diagnostics);
-            if (warningBehavior != WarningBehavior.Ignore)
+            if (definition.WarningBehavior != WarningBehavior.Ignore)
             {
-                definition.Log(
-                    diagnostics,
-                    warningBehavior,
-                    rowsAffected);
+                definition.Log(diagnostics, rowsAffected);
             }
 
-            if (diagnostics.DiagnosticSource.IsEnabled(definition.EventId.Name))
+            if (diagnostics.NeedsEventData(definition, out var diagnosticSourceEnabled, out var simpleLogEnabled))
             {
-                diagnostics.DiagnosticSource.Write(
-                    definition.EventId.Name,
-                    new SaveChangesEventData(
-                        definition,
-                        ChangesSaved,
-                        entries,
-                        rowsAffected));
+                var eventData = new SaveChangesEventData(
+                    definition,
+                    ChangesSaved,
+                    entries,
+                    rowsAffected);
+
+                diagnostics.DispatchEventData(diagnosticSourceEnabled, simpleLogEnabled, definition, eventData);
             }
         }
 

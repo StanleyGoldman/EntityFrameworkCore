@@ -365,7 +365,7 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Conventions
         public virtual void ProcessModelFinalized(IConventionModelBuilder modelBuilder, IConventionContext<IConventionModelBuilder> context)
         {
             var definition = CoreResources.LogRedundantIndexRemoved(Dependencies.Logger);
-            if (definition.GetLogBehavior(Dependencies.Logger) == WarningBehavior.Ignore
+            if (definition.WarningBehavior == WarningBehavior.Ignore
                 && !Dependencies.Logger.DiagnosticSource.IsEnabled(definition.EventId.Name))
             {
                 return;
