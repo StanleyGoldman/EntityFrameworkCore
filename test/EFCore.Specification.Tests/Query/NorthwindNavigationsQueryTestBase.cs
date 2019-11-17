@@ -1356,12 +1356,5 @@ namespace Microsoft.EntityFrameworkCore.Query
         {
             public Customer Customer { get; set; }
         }
-
-        private async Task AssertTranslationFailed(Func<Task> testCode)
-        {
-            Assert.Contains(
-                CoreStrings.TranslationFailed("").Substring(21),
-                (await Assert.ThrowsAsync<InvalidOperationException>(testCode)).Message);
-        }
     }
 }

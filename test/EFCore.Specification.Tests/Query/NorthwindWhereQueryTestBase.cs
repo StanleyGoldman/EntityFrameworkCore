@@ -1995,12 +1995,5 @@ namespace Microsoft.EntityFrameworkCore.Query
                 ss => ss.Set<Customer>().Where(c => i + c.CustomerID + i == c.CompanyName)
                     .Select(c => c.CustomerID));
         }
-
-        protected async Task AssertTranslationFailed(Func<Task> testCode)
-        {
-            Assert.Contains(
-                CoreStrings.TranslationFailed("").Substring(21),
-                (await Assert.ThrowsAsync<InvalidOperationException>(testCode)).Message);
-        }
     }
 }
