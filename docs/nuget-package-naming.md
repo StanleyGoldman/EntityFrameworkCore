@@ -1,0 +1,3 @@
+This document was a proposal for NuGet package naming that was eventually discarded after [much discussion](https://github.com/aspnet/Announcements/issues/42) (and [further discussion](https://github.com/aspnet/EntityFramework/issues/2508)).
+
+You can [see the original proposal in the version history of this page](https://github.com/aspnet/EntityFramework/wiki/NuGet-Package-Naming/c8838d14b8bb1a0bee51f1cb63604319e244c5c1).
